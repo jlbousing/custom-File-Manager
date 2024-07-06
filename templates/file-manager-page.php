@@ -56,7 +56,8 @@ if (is_dir($base_directory)) {
         if ($current_directory) {
             $parent_directory = dirname($current_directory);
             echo '<li class="cfm-file-item">';
-            echo '<a href="' . esc_url(add_query_arg('directory', urlencode($parent_directory), admin_url('admin.php?page=cf-manager'))) . '">.. (subir)</a>';
+            echo '<a href="' . esc_url(add_query_arg('directory', urlencode($parent_directory), admin_url('admin.php?page=cf-manager'))) . '">';
+            echo '<i class="fas fa-folder"></i> .. (subir)</a>';
             echo '</li>';
         }
 
@@ -65,21 +66,31 @@ if (is_dir($base_directory)) {
                 $file_path = $base_directory . '/' . $file;
                 if (is_dir($file_path)) {
                     echo '<li class="cfm-file-item">';
-                    echo '<a href="' . esc_url(add_query_arg('directory', urlencode($current_directory . '/' . $file), admin_url('admin.php?page=cf-manager'))) . '">' . esc_html($file) . ' (Directorio)</a>';
+                    echo '<a href="' . esc_url(add_query_arg('directory', urlencode($current_directory . '/' . $file), admin_url('admin.php?page=cf-manager'))) . '">';
+                    echo '<i class="fas fa-folder"></i> ' . esc_html($file) . '</a>';
                     echo '<form method="POST" style="display:inline;" onsubmit="return confirm(\'¿Estás seguro de que deseas eliminar este directorio?\');">';
                     echo '<input type="hidden" name="current_directory" value="' . esc_attr($current_directory) . '" />';
                     echo '<input type="hidden" name="delete_file" value="' . esc_attr($file) . '" />';
                     echo '<input type="hidden" name="is_directory" value="1" />';
-                    echo '<button type="submit" class="cfm-delete-button">X</button>';
+                    echo '<button type="submit" class="cfm-delete-button"><i class="fas fa-times"></i></button>';
                     echo '</form>';
                     echo '</li>';
                 } else {
+                    $file_extension = pathinfo($file_path, PATHINFO_EXTENSION);
+                    $allowed_image_extensions = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
+                    $icon_class = 'fas fa-file'; // icono por defecto para archivos
+
+                    if (in_array(strtolower($file_extension), $allowed_image_extensions)) {
+                        $icon_class = 'fas fa-file-image'; // si es una imagen
+                    }
+
                     echo '<li class="cfm-file-item">';
-                    echo '<a href="' . esc_url($base_url . '/' . $file) . '" download>' . esc_html($file) . '</a>';
+                    echo '<a href="' . esc_url($base_url . '/' . $file) . '" download>';
+                    echo '<i class="' . $icon_class . '"></i> ' . esc_html($file) . '</a>';
                     echo '<form method="POST" style="display:inline;" onsubmit="return confirm(\'¿Estás seguro de que deseas eliminar este archivo?\');">';
                     echo '<input type="hidden" name="current_directory" value="' . esc_attr($current_directory) . '" />';
                     echo '<input type="hidden" name="delete_file" value="' . esc_attr($file) . '" />';
-                    echo '<button type="submit" class="cfm-delete-button">X</button>';
+                    echo '<button type="submit" class="cfm-delete-button"><i class="fas fa-times"></i></button>';
                     echo '</form>';
                     echo '</li>';
                 }

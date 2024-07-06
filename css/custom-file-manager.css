@@ -1,7 +1,8 @@
 .cfm-container {
     font-family: Arial, sans-serif;
-    max-width: 800px;
+    max-width: 70%;
     margin: 0 auto;
+    margin-top: 2rem;
     padding: 20px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
@@ -95,3 +96,36 @@
 .cfm-delete-button:hover {
     color: darkred;
 }
+
+.cfm-file-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cfm-file-item a {
+    color: #0073aa;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.cfm-file-item a i {
+    margin-right: 10px; /* Espacio entre el icono y el nombre */
+}
+
+.cfm-delete-button {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.cfm-delete-button:hover {
+    color: darkred;
+}
+
