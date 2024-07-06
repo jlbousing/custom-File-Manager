@@ -12,7 +12,6 @@ function cf_manager_create_menu() {
 
 function cf_manager_page() {
     if (current_user_can('upload_files')) {
-        // Incluir la plantilla de la página de gestión de archivos
         include CFM_PLUGIN_DIR . 'templates/file-manager-page.php';
     } else {
         echo '<p>No tienes permiso para acceder a esta página.</p>';
@@ -52,13 +51,9 @@ function cf_manager_handle_create_directory() {
             wp_die('No tienes permiso para crear directorios.');
         }
 
-        // Obtener el directorio actual y eliminar barras adicionales
         $current_directory = isset($_POST['current_directory']) ? trim(sanitize_text_field($_POST['current_directory']), '/') : '';
-
         $uploads = wp_upload_dir();
         $new_dir = sanitize_text_field($_POST['new_directory']);
-
-        // Construir la ruta completa
         $new_dir_path = $uploads['basedir'] . '/' . ($current_directory ? $current_directory . '/' : '') . $new_dir;
 
         if (!file_exists($new_dir_path)) {
@@ -70,6 +65,24 @@ function cf_manager_handle_create_directory() {
             exit();
         }
     }
+}
+
+// Función para eliminar directorios y archivos de forma recursiva
+function cf_manager_delete_directory($dir) {
+    if (!is_dir($dir)) {
+        return false;
+    }
+
+    $items = array_diff(scandir($dir), array('.', '..'));
+    foreach ($items as $item) {
+        $item_path = $dir . '/' . $item;
+        if (is_dir($item_path)) {
+            cf_manager_delete_directory($item_path);
+        } else {
+            unlink($item_path);
+        }
+    }
+    return rmdir($dir);
 }
 
 function cf_manager_handle_delete_file() {
@@ -84,7 +97,13 @@ function cf_manager_handle_delete_file() {
         $file_path = $uploads['basedir'] . '/' . $current_directory . '/' . $file_to_delete;
 
         if (file_exists($file_path)) {
-            unlink($file_path);
+            if (isset($_POST['is_directory']) && $_POST['is_directory'] == '1') {
+                // Es un directorio
+                cf_manager_delete_directory($file_path);
+            } else {
+                // Es un archivo
+                unlink($file_path);
+            }
             wp_safe_redirect(add_query_arg('delete_status', 'success', admin_url('admin.php?page=cf-manager&directory=' . urlencode($current_directory))));
             exit();
         } else {
