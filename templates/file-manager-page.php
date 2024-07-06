@@ -72,7 +72,7 @@ if (is_dir($base_directory)) {
                     echo '<input type="hidden" name="current_directory" value="' . esc_attr($current_directory) . '" />';
                     echo '<input type="hidden" name="delete_file" value="' . esc_attr($file) . '" />';
                     echo '<input type="hidden" name="is_directory" value="1" />';
-                    echo '<button type="submit" class="cfm-delete-button"><i class="fas fa-times"></i></button>';
+                    if(current_user_can("delete_files")) echo '<button type="submit" class="cfm-delete-button"><i class="fas fa-times"></i></button>';
                     echo '</form>';
                     echo '</li>';
                 } else {
@@ -90,7 +90,7 @@ if (is_dir($base_directory)) {
                     echo '<form method="POST" style="display:inline;" onsubmit="return confirm(\'¿Estás seguro de que deseas eliminar este archivo?\');">';
                     echo '<input type="hidden" name="current_directory" value="' . esc_attr($current_directory) . '" />';
                     echo '<input type="hidden" name="delete_file" value="' . esc_attr($file) . '" />';
-                    echo '<button type="submit" class="cfm-delete-button"><i class="fas fa-times"></i></button>';
+                    if(current_user_can("delete_files")) echo '<button type="submit" class="cfm-delete-button"><i class="fas fa-times"></i></button>';
                     echo '</form>';
                     echo '</li>';
                 }
