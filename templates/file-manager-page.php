@@ -1,43 +1,46 @@
 <?php
+echo '<div class="cfm-container">';
 echo '<h1>Gestión de Archivos</h1>';
 
 $current_directory = isset($_GET['directory']) ? trim(sanitize_text_field($_GET['directory']), '/') : '';
 
 if (isset($_GET['upload_status'])) {
     if ($_GET['upload_status'] == 'success') {
-        echo '<p>Archivo subido exitosamente.</p>';
+        echo '<p class="cfm-message success">Archivo subido exitosamente.</p>';
     } elseif ($_GET['upload_status'] == 'error') {
-        echo '<p>Error subiendo el archivo.</p>';
+        echo '<p class="cfm-message error">Error subiendo el archivo.</p>';
     }
 }
 
 if (isset($_GET['directory_status'])) {
     if ($_GET['directory_status'] == 'success') {
-        echo '<p>Directorio creado exitosamente.</p>';
+        echo '<p class="cfm-message success">Directorio creado exitosamente.</p>';
     } elseif ($_GET['directory_status'] == 'exists') {
-        echo '<p>El directorio ya existe.</p>';
+        echo '<p class="cfm-message error">El directorio ya existe.</p>';
     }
 }
 
 if (isset($_GET['delete_status'])) {
     if ($_GET['delete_status'] == 'success') {
-        echo '<p>Archivo/Directorio eliminado exitosamente.</p>';
+        echo '<p class="cfm-message success">Archivo/Directorio eliminado exitosamente.</p>';
     } elseif ($_GET['delete_status'] == 'not_found') {
-        echo '<p>El archivo o directorio no existe.</p>';
+        echo '<p class="cfm-message error">El archivo o directorio no existe.</p>';
     }
 }
 
-echo '<form method="POST" enctype="multipart/form-data">';
+echo '<div class="cfm-actions">';
+echo '<form method="POST" enctype="multipart/form-data" class="cfm-form">';
 echo '<input type="hidden" name="current_directory" value="' . esc_attr($current_directory) . '" />';
 echo '<input type="file" name="file" />';
-echo '<input type="submit" value="Subir Archivo" />';
+echo '<input type="submit" value="Subir Archivo" class="cfm-button" />';
 echo '</form>';
 
-echo '<form method="POST">';
+echo '<form method="POST" class="cfm-form">';
 echo '<input type="hidden" name="current_directory" value="' . esc_attr($current_directory) . '" />';
 echo '<input type="text" name="new_directory" placeholder="Nombre del nuevo directorio" />';
-echo '<input type="submit" value="Crear Directorio" />';
+echo '<input type="submit" value="Crear Directorio" class="cfm-button" />';
 echo '</form>';
+echo '</div>';
 
 $uploads = wp_upload_dir();
 $base_directory = $uploads['basedir'] . '/' . $current_directory;
@@ -48,33 +51,35 @@ if (is_dir($base_directory)) {
 
     if ($files !== false) {
         echo '<h2>Archivos y Directorios en: ' . esc_html($current_directory) . '</h2>';
-        echo '<ul>';
+        echo '<ul class="cfm-file-list">';
 
         if ($current_directory) {
             $parent_directory = dirname($current_directory);
-            echo '<li><a href="' . esc_url(add_query_arg('directory', urlencode($parent_directory), admin_url('admin.php?page=cf-manager'))) . '">.. (subir)</a></li>';
+            echo '<li class="cfm-file-item">';
+            echo '<a href="' . esc_url(add_query_arg('directory', urlencode($parent_directory), admin_url('admin.php?page=cf-manager'))) . '">.. (subir)</a>';
+            echo '</li>';
         }
 
         foreach ($files as $file) {
             if ($file !== '.' && $file !== '..') {
                 $file_path = $base_directory . '/' . $file;
                 if (is_dir($file_path)) {
-                    echo '<li>';
+                    echo '<li class="cfm-file-item">';
                     echo '<a href="' . esc_url(add_query_arg('directory', urlencode($current_directory . '/' . $file), admin_url('admin.php?page=cf-manager'))) . '">' . esc_html($file) . ' (Directorio)</a>';
-                    echo ' <form method="POST" style="display:inline;" onsubmit="return confirm(\'¿Estás seguro de que deseas eliminar este directorio?\');">';
+                    echo '<form method="POST" style="display:inline;" onsubmit="return confirm(\'¿Estás seguro de que deseas eliminar este directorio?\');">';
                     echo '<input type="hidden" name="current_directory" value="' . esc_attr($current_directory) . '" />';
                     echo '<input type="hidden" name="delete_file" value="' . esc_attr($file) . '" />';
                     echo '<input type="hidden" name="is_directory" value="1" />';
-                    echo '<button type="submit" style="background:none;border:none;color:red;cursor:pointer;">X</button>';
+                    echo '<button type="submit" class="cfm-delete-button">X</button>';
                     echo '</form>';
                     echo '</li>';
                 } else {
-                    echo '<li>';
+                    echo '<li class="cfm-file-item">';
                     echo '<a href="' . esc_url($base_url . '/' . $file) . '" download>' . esc_html($file) . '</a>';
-                    echo ' <form method="POST" style="display:inline;" onsubmit="return confirm(\'¿Estás seguro de que deseas eliminar este archivo?\');">';
+                    echo '<form method="POST" style="display:inline;" onsubmit="return confirm(\'¿Estás seguro de que deseas eliminar este archivo?\');">';
                     echo '<input type="hidden" name="current_directory" value="' . esc_attr($current_directory) . '" />';
                     echo '<input type="hidden" name="delete_file" value="' . esc_attr($file) . '" />';
-                    echo '<button type="submit" style="background:none;border:none;color:red;cursor:pointer;">X</button>';
+                    echo '<button type="submit" class="cfm-delete-button">X</button>';
                     echo '</form>';
                     echo '</li>';
                 }
@@ -88,3 +93,5 @@ if (is_dir($base_directory)) {
 } else {
     echo '<p>El directorio no existe.</p>';
 }
+
+echo '</div>';

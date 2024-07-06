@@ -1,0 +1,97 @@
+.cfm-container {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.cfm-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.cfm-message {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.cfm-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.cfm-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.cfm-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.cfm-form {
+    display: flex;
+    align-items: center;
+}
+
+.cfm-form input[type="file"],
+.cfm-form input[type="text"] {
+    margin-right: 10px;
+}
+
+.cfm-button {
+    background-color: #0073aa;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cfm-button:hover {
+    background-color: #005f8d;
+}
+
+.cfm-file-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.cfm-file-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cfm-file-item a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.cfm-file-item a:hover {
+    text-decoration: underline;
+}
+
+.cfm-delete-button {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.cfm-delete-button:hover {
+    color: darkred;
+}
