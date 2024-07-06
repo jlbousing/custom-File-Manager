@@ -3,7 +3,7 @@
 Plugin Name: Custom File Manager
 Description: Plugin personalizado para gestionar archivos y directorios.
 Version: 1.0
-Author: Tu Nombre
+Author: Jorge Luis Bou-saad
 */
 
 define('CFM_PLUGIN_DIR', plugin_dir_path(__FILE__));
