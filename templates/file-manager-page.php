@@ -4,6 +4,10 @@ echo '<h1>Gestión de Archivos</h1>';
 
 $current_directory = isset($_GET['directory']) ? trim(sanitize_text_field($_GET['directory']), '/') : '';
 
+if (strpos($current_directory, '..') !== false) {
+    wp_die('No tienes permiso para acceder a esta ubicación.');
+}
+
 if (isset($_GET['upload_status'])) {
     if ($_GET['upload_status'] == 'success') {
         echo '<p class="cfm-message success">Archivo subido exitosamente.</p>';
@@ -43,8 +47,9 @@ echo '</form>';
 echo '</div>';
 
 $uploads = wp_upload_dir();
-$base_directory = $uploads['basedir'] . '/' . $current_directory;
-$base_url = $uploads['baseurl'] . '/' . $current_directory;
+$custom_base_directory = $uploads['basedir'] . '/files-custom';
+$custom_base_url = $uploads['baseurl'] . '/files-custom';
+$base_directory = $custom_base_directory . '/' . $current_directory;
 
 if (is_dir($base_directory)) {
     $files = scandir($base_directory);
@@ -96,10 +101,9 @@ if (is_dir($base_directory)) {
                 }
             }
         }
-
         echo '</ul>';
     } else {
-        echo '<p>No se pudieron leer los contenidos del directorio.</p>';
+        echo '<p>No se pueden listar los archivos en este directorio.</p>';
     }
 } else {
     echo '<p>El directorio no existe.</p>';
