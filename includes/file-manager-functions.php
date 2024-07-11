@@ -132,7 +132,7 @@ function delTree($dir) {
 
 function cf_manager_render_page() {
     echo '<div class="cfm-container">';
-    echo '<h1>Gestión de Archivos</h1>';
+    //echo '<h1>Gestión de Archivos</h1>';
 
     $current_directory = isset($_GET['directory']) ? trim(sanitize_text_field($_GET['directory']), '/') : '';
 
