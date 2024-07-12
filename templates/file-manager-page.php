@@ -29,6 +29,8 @@ if (isset($_GET['delete_status'])) {
         echo '<p class="cfm-message success">Archivo/Directorio eliminado exitosamente.</p>';
     } elseif ($_GET['delete_status'] == 'not_found') {
         echo '<p class="cfm-message error">El archivo o directorio no existe.</p>';
+    } elseif ($_GET['delete_status'] == 'not_empty') {
+        echo '<p class="cfm-message error">El directorio no está vacío.</p>';
     }
 }
 
@@ -61,7 +63,7 @@ if (is_dir($base_directory)) {
         if ($current_directory) {
             $parent_directory = dirname($current_directory);
             echo '<li class="cfm-file-item">';
-            echo '<a href="' . esc_url(add_query_arg('directory', urlencode($parent_directory), admin_url('admin.php?page=cf-manager'))) . '">';
+            echo '<a href="' . esc_url(add_query_arg('directory', urlencode($parent_directory), get_permalink())) . '">';
             echo '<i class="fas fa-folder"></i> .. (subir)</a>';
             echo '</li>';
         }
@@ -71,7 +73,7 @@ if (is_dir($base_directory)) {
                 $file_path = $base_directory . '/' . $file;
                 if (is_dir($file_path)) {
                     echo '<li class="cfm-file-item">';
-                    echo '<a href="' . esc_url(add_query_arg('directory', urlencode($current_directory . '/' . $file), admin_url('admin.php?page=cf-manager'))) . '">';
+                    echo '<a href="' . esc_url(add_query_arg('directory', urlencode($current_directory . '/' . $file), get_permalink())) . '">';
                     echo '<i class="fas fa-folder"></i> ' . esc_html($file) . '</a>';
                     echo '<form method="POST" style="display:inline;" onsubmit="return confirm(\'¿Estás seguro de que deseas eliminar este directorio?\');">';
                     echo '<input type="hidden" name="current_directory" value="' . esc_attr($current_directory) . '" />';
@@ -90,7 +92,7 @@ if (is_dir($base_directory)) {
                     }
 
                     echo '<li class="cfm-file-item">';
-                    echo '<a href="' . esc_url($base_url . '/' . $file) . '" download>';
+                    echo '<a href="' . esc_url($custom_base_url . '/' . $current_directory . '/' . $file) . '" download>';
                     echo '<i class="' . $icon_class . '"></i> ' . esc_html($file) . '</a>';
                     echo '<form method="POST" style="display:inline;" onsubmit="return confirm(\'¿Estás seguro de que deseas eliminar este archivo?\');">';
                     echo '<input type="hidden" name="current_directory" value="' . esc_attr($current_directory) . '" />';
@@ -110,3 +112,4 @@ if (is_dir($base_directory)) {
 }
 
 echo '</div>';
+?>
