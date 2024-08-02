@@ -92,7 +92,7 @@ if (is_dir($base_directory)) {
                     }
 
                     echo '<li class="cfm-file-item">';
-                    echo '<a href="' . esc_url($custom_base_url . '/' . $current_directory . '/' . $file) . '" download>';
+                    echo '<a href="' . esc_url($custom_base_url . '/' . $current_directory . '/' . $file) . '"  target="_blank">';
                     echo '<i class="' . $icon_class . '"></i> ' . esc_html($file) . '</a>';
                     echo '<form method="POST" style="display:inline;" onsubmit="return confirm(\'¿Estás seguro de que deseas eliminar este archivo?\');">';
                     echo '<input type="hidden" name="current_directory" value="' . esc_attr($current_directory) . '" />';
